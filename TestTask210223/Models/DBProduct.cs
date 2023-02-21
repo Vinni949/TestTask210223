@@ -2,12 +2,17 @@
 
 namespace TestTask210223.Models
 {
-    public class DBProduct:DbContext
+    public class DBProduct : DbContext
     {
-        public DbSet<Product> Products { get; set; }
-        public DBProduct(DbContextOptions<DBProduct> options) : base(options)
+        public DBProduct()
         {
-            Database.EnsureCreated();
+            Database.EnsureCreated();   // гарантируем, что БД создана
+        }
+        public DbSet<Product> Products { get; set; }
+
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
+            optionsBuilder.UseSqlServer(@"Server=(localdb)\mssqllocaldb;Database=helloappdb;Trusted_Connection=True;");
         }
     }
 }
