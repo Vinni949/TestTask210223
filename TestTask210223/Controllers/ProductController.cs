@@ -5,7 +5,7 @@ using TestTask210223.Models;
 
 namespace TestTask210223.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("api/ProductController")]
     [ApiController]
     public class ProductController : ControllerBase
     {
@@ -13,7 +13,7 @@ namespace TestTask210223.Controllers
 
         // GET: api/<ProductController>
         [HttpGet]
-        public IEnumerable<Product> Get()
+        public IEnumerable<Product> GetAll()
         {
             List<Product> products = new List<Product>();
             products = dBProduct.Products.ToList();
@@ -21,8 +21,8 @@ namespace TestTask210223.Controllers
         }
 
         // GET api/<ProductController>/5
-        [HttpGet("{name}")]
-        public string Get(string name)
+        [HttpGet("GetProductName")]
+        public string GetProductName(string name)
         {   
             Product product = new Product();
             product = dBProduct.Products.SingleOrDefault(p => p.Name == name);
@@ -31,18 +31,27 @@ namespace TestTask210223.Controllers
 
         
         // PUT api/<ProductController>/5
-        [HttpPut("{AddPosition}")]
-        public void Put(string name)
+        [HttpPut("AddPosition")]
+        public void AddPosition(string name)
         {
             Product product = new Product() { Name=name};
             dBProduct.Products.Add(product);
             dBProduct.SaveChanges();
             
         }
+        [HttpPut("CreatedPosition")]
+        public void CreatedPosition(string name, string newName)
+        {
+            Product product = new Product();
+            product = dBProduct.Products.SingleOrDefault(p => p.Name == name);
+            product.Name = newName;
+            dBProduct.SaveChanges();
+
+        }
 
         // DELETE api/<ProductController>/5
-        [HttpDelete("{DeletePosition}")]
-        public void Delete(string name)
+        [HttpDelete("DeletePosition")]
+        public void DeletePosition(string name)
         {
             Product product = new Product();
             product = dBProduct.Products.SingleOrDefault(p => p.Name == name);
