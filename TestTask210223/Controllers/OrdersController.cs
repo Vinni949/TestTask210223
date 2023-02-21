@@ -17,7 +17,12 @@ namespace TestTask210223.Controllers
         {
             List<Order> orders = new List<Order>();
             orders = dBProduct.Orders.ToList();
-            return orders;
+            if (orders != null)
+            {
+                return orders;
+            }
+            else
+                return null;
         }
 
         // GET api/<ValuesController>/5
@@ -26,13 +31,27 @@ namespace TestTask210223.Controllers
         {
             Order order = new Order();
             order = dBProduct.Orders.SingleOrDefault(p => p.NameOrder == name);
-            return order;
+            if (order != null)
+            { 
+                return order; 
+            }
+            else
+                return null;
         }
 
         // PUT api/<ValuesController>/5
         [HttpPut("AddOrders")]
-        public void AddOrders(string nameOrders,string nameClient,string phoneNumber,List<Product> products)
+        public void AddOrders(string nameOrders,string nameClient,string phoneNumber,List<string> nameProducts)
         {
+            List<Product> products = new List<Product>();
+            foreach (string product in nameProducts)
+            {
+                Product p = dBProduct.Products.SingleOrDefault(p => p.Name == product);
+                if (p != null)
+                {
+                    products.Add(p);
+                }
+            }
             Order order = new Order() { NameOrder=nameOrders,Client=nameClient,PhoneNumber=phoneNumber,Products=products};
             dBProduct.Add(order);
             dBProduct.SaveChanges();
@@ -67,8 +86,11 @@ namespace TestTask210223.Controllers
         {
             Order order = new Order();
             order = dBProduct.Orders.SingleOrDefault(p => p.NameOrder == name);
-            dBProduct.Remove(order);
-            dBProduct.SaveChanges();
+            if (order != null)
+            {
+                dBProduct.Remove(order);
+                dBProduct.SaveChanges();
+            }
         }
     }
 }

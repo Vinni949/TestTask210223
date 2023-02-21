@@ -17,16 +17,26 @@ namespace TestTask210223.Controllers
         {
             List<Product> products = new List<Product>();
             products = dBProduct.Products.ToList();
-            return products;
+            if (products != null)
+            {
+                return products;
+            }
+            else
+                return null;
         }
 
         // GET api/<ProductController>/5
         [HttpGet("GetProductName")]
-        public string GetProductName(string name)
+        public Product GetProductName(string name)
         {   
             Product product = new Product();
             product = dBProduct.Products.SingleOrDefault(p => p.Name == name);
-            return product.Name;
+            if (product != null)
+            {
+                return product;
+            }
+            else
+                return null;
         }
 
         
@@ -44,8 +54,11 @@ namespace TestTask210223.Controllers
         {
             Product product = new Product();
             product = dBProduct.Products.SingleOrDefault(p => p.Name == name);
-            product.Name = newName;
-            dBProduct.SaveChanges();
+            if (product != null)
+            {
+                product.Name = newName;
+                dBProduct.SaveChanges();
+            }
 
         }
 
@@ -55,8 +68,11 @@ namespace TestTask210223.Controllers
         {
             Product product = new Product();
             product = dBProduct.Products.SingleOrDefault(p => p.Name == name);
-            dBProduct.Products.Remove(product);
-            dBProduct.SaveChanges();
+            if (product != null)
+            {
+                dBProduct.Products.Remove(product);
+                dBProduct.SaveChanges();
+            }
         }
     }
 }
